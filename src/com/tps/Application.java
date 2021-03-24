@@ -7,6 +7,10 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.tps.generator.LoadedWordGen;
+import com.tps.modes.PlayMode;
+import com.tps.modes.SimpleMode;
+
 public class Application extends JPanel{
 		
 		/**
@@ -18,11 +22,11 @@ public class Application extends JPanel{
 		public static final int RATE_FALL = 5;
 		private JFrame window;
 		private KeyHandler key;
-		private WordGenerator wg;
+		private PlayMode mode;
 		
 				public Application() {
 					 key = new KeyHandler();
-					 wg = new WordGenerator("./words/BankWordsFR.txt",8,key);//new WordGenerator(3,key);
+					 mode = new SimpleMode(new LoadedWordGen("./words/BankWordsEN.txt",50,key));
 					 setView();
 					}
 				
@@ -41,15 +45,8 @@ public class Application extends JPanel{
 			public void paint(Graphics g) { 
 				g.setColor(Color.black);
 				g.fillRect(0, 0, WIDTH, HEIGHT);
-				wg.update();
-				wg.render(g);
-				
-			/*	g.setColor(Color.red);
-				char c = (char)(key.getPressedKey());
-				System.out.println(c);
-				g.setFont(Word.GENERAL_FONT);
-				g.drawString(c+"", 20, 30);*/
-				
+				mode.update();
+				mode.render(g);
 				try {
 					Thread.sleep(RATE_FALL);
 				} catch (InterruptedException e) {

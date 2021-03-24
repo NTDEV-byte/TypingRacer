@@ -12,6 +12,7 @@ public class Word {
 		public static final int LETTER_SPACE = 20;
 		private int x,y;
 		private int length;
+		private boolean isActive;
 		private Color color;
 		private String word="";
 		private KeyHandler key;
@@ -85,26 +86,30 @@ public class Word {
 				}
 				
 				private void letterTyped() {
-					char input = (char)key.getPressedKey();
-					for(int i=0;i<length;i++) {
-						System.out.println("Typed:"+input);
-						if(word.charAt(i) == input) { 
-							System.out.println("Letter Typed: "+word.charAt(i));
-							lettersState.set(i,true);
+					if(isActive) { 
+						char input = (char)key.getPressedKey();
+						for(int i=0;i<length;i++) {
+							//System.out.println("Typed:"+input);
+							if(word.charAt(i) == input) { 
+								//System.out.println("Letter Typed: "+word.charAt(i));
+								lettersState.set(i,true);
+							}
 						}
 					}
 				}
 				
 				public void render(Graphics g) { 
-					g.setFont(GENERAL_FONT);
-					for(int i=0;i<length;i++) { 
-						 if(lettersState.get(i)) { 
-							 g.setColor(Color.red);
-						 }
-						 else{
-							 g.setColor(color);
-						 }
-						 g.drawString(word.charAt(i)+"", x +(i * LETTER_SPACE), y);
+					if(isActive) {
+						g.setFont(GENERAL_FONT);
+						for(int i=0;i<length;i++) { 
+							 if(lettersState.get(i)) { 
+								 g.setColor(Color.red);
+							 }
+							 else{
+								 g.setColor(color);
+							 }
+							 g.drawString(word.charAt(i)+"", x +(i * LETTER_SPACE), y);
+						}
 					}
 				}
 				
@@ -115,10 +120,16 @@ public class Word {
 					 return true;
 				}
 				
+				public boolean isActive() {
+					return isActive;
+				}
+
+				public void setActive(boolean isActive) {
+					this.isActive = isActive;
+				}
 				
-				public void renderWord(Graphics g) { 
-					g.setColor(color);
-					g.setFont(GENERAL_FONT);
-					g.drawString(word, x, y);
+				
+				public int getWordSize() { 
+					return word.length();
 				}
 }
